@@ -15,6 +15,10 @@ class Router
 
     function __construct()
     {
+        //configurando cors e conteúdo de response
+        header('Access-Control-Allow-Origin: *');
+        header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
+        header("Access-Control-Allow-Headers: Content-Type");
 
         //setando no header do response o content-type
         header("content-type: application/json");
@@ -66,10 +70,12 @@ class Router
 
             case "PUT":
                 $this->controllerMethod = "update";
+                $this->getParams($url);
                 break;
 
             case "DELETE":
                 $this->controllerMethod = "delete";
+                $this->getParams($url);
                 break;
 
             default:
@@ -86,5 +92,15 @@ class Router
     private function parseURL()
     {
         return explode("/", $_SERVER["SERVER_NAME"] . $_SERVER["REQUEST_URI"]);
+    }
+
+    private function getParams($url){
+        if(isset($url[2]) && is_numeric($url[2])){
+            $this->params = [$url[2]];
+        }else{
+            http_response_code(400); //400 bad request
+            echo json_encode(["erro" => "Parâmetro inválido"], JSON_UNESCAPED_UNICODE);
+            exit;
+        }
     }
 }

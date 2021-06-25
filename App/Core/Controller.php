@@ -1,17 +1,26 @@
 <?php
 
-    namespace App\Core;
+namespace App\Core;
 
-    class Controller {
+class Controller
+{
 
-        //recebemos o model a ser instanciado
-        //retornamos a instancia pronta
-        public function Model($model){
-            require_once("../App/Model/" . $model . ".php");
-            return new $model;
-        }
-
-        public function view($view, $dados = []){
-            require_once "../App/View/template.php";
-        }
+    //recebemos o model a ser instanciado
+    //retornamos a instancia pronta
+    public function Model($model)
+    {
+        require_once("../App/Model/" . $model . ".php");
+        return new $model;
     }
+
+
+    protected function getRequestBody()
+    {
+        //pegando o corpo da requisição, retona uma string
+        $json = file_get_contents("php://input");
+        //convertendo a string em objeto
+        $obj = json_decode($json);
+
+        return $obj;
+    }
+}

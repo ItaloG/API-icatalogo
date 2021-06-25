@@ -11,7 +11,7 @@ class Produtos extends Controller{
 
         $produtos = $produtoModel->listarTodos();
 
-        $this->view("produtos/index", $produtos);
+        echo json_encode($produtos, JSON_UNESCAPED_UNICODE);
     }
 
     //buscar pelo id
